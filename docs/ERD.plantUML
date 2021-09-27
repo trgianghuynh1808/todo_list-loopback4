@@ -1,0 +1,87 @@
+@startuml TODO LIST ERD
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Todo {
+  -id: ObjectID <<generated>>
+  --
+  ~creatorId: ObjectID
+  ~linkTodoId: ObjectID
+  ~projectId: ObjectID
+  --
+  *content: string
+  *status: string
+  *baseRole: string
+  completedDate: Date
+}
+
+entity User {
+  -id: ObjectID <<generated>>
+  --
+  *username: string
+  *password: string
+}
+
+entity Role {
+  -id: ObjectID <<generated>>
+  --
+  *name: string
+}
+
+entity UserRole{
+  -id: ObjectID <<generated>>
+  --
+  ~roleId: ObjectID
+  ~userId: ObjectID
+}
+
+entity Permission {
+  -id: ObjectID <<generated>>
+  --
+  *name: string
+}
+
+entity RolePermission{
+  -id: ObjectID <<generated>>
+  --
+  ~roleId: ObjectID
+  ~permissionId: ObjectID
+}
+
+entity Project {
+  -id: ObjectID <<generated>>
+  --
+  *name: string
+}
+
+entity ProjectUser {
+  -id: ObjectID <<generated>>
+  --
+  ~userId: ObjectID
+  ~projectId: ObjectID
+}
+
+
+
+
+' relations
+
+User ||..o{ Todo
+Project ||..o{ Todo
+Todo ||..o| Todo
+
+Project ||..o{ ProjectUser
+User ||..o{ ProjectUser
+
+Role ||..o{ RolePermission
+Permission ||..o{ RolePermission
+
+Role ||..o{ UserRole
+User ||..o{ UserRole
+
+
+@enduml
